@@ -1,0 +1,5 @@
+{
+    "port": "8080",
+    "iam_host": "grxm-iam:8081",
+    "iam_authority_password": "docker-compose-secure-password-123"
+}
