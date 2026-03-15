@@ -36,6 +36,14 @@ else
     echo "  Response: $IAM_HEALTH"
 fi
 
+# Redis Health Check
+REDIS_HEALTH=$(sudo docker exec grxm-redis redis-cli ping 2>/dev/null)
+if [ "$REDIS_HEALTH" == "PONG" ]; then
+    echo "Redis Service:   HEALTHY"
+else
+    echo "Redis Service:   UNHEALTHY or OFFLINE"
+fi
+
 # Check Authority WebSocket (should be blocked)
 echo -e "\n[ Security Check ]"
 WS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/iam/api/v1/authority)

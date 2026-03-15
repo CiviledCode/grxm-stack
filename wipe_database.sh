@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "WARNING: This will completely wipe the MongoDB database and all IAM users!"
+echo "WARNING: This will completely wipe the IAM MongoDB database, the App MongoDB database, Redis cache, and all IAM users!"
 read -p "Are you sure you want to proceed? (y/N) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]

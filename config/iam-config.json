@@ -7,6 +7,12 @@
         "uri": "mongodb://mongo:27017",
         "database": "grxm_iam"
     },
+    "keystore": {
+        "host": "redis",
+        "port": 6379,
+        "password": "",
+        "db": 0
+    },
     "authority": {
         "password": "docker-compose-secure-password-123",
         "path": "/iam/api/v1/authority"
@@ -21,7 +27,10 @@
         "type": "jwt",
         "bits": 2048,
         "algorithm": "RS256",
-        "key_path": "/app/keys/newest"
+        "key_path": "/app/keys/newest",
+        "expiration_hours": 24,
+        "refresh_max_hours": 168,
+        "cookie_name": "grxm_token"
     },
     "email": {
         "username_min_length": 3,

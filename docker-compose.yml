@@ -24,9 +24,32 @@ services:
       - mongo-data:/data/db
     restart: unless-stopped
 
+  mongo-app:
+    image: mongo:6.0
+    container_name: grxm-mongo-app
+    networks:
+      - grxm-net
+    volumes:
+      - mongo-app-data:/data/db
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: grxm-redis
+    networks:
+      - grxm-net
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   grxm-iam:
     build:
-      context: ${PROJECT_ROOT}/grxm-iam
+      context: ./grxm-iam
       dockerfile: /home/civ/Projects/grxm-stack/build/Dockerfile.iam
     container_name: grxm-iam
     networks:
@@ -35,7 +58,10 @@ services:
       - ./config/iam-config.json:/app/config.json
       - ./iam-keys:/app/keys
     depends_on:
-      - mongo
+      mongo:
+        condition: service_started
+      redis:
+        condition: service_healthy
     environment:
       - IAM_CONFIG_LOCATION=/app/config.json
     healthcheck:
@@ -47,18 +73,22 @@ services:
 
   webapp:
     build:
-      context: ${PROJECT_ROOT}/grxm-webapp
+      context: ./grxm-webapp
       dockerfile: /home/civ/Projects/grxm-stack/build/Dockerfile.webapp
     container_name: grxm-webapp
     networks:
       - grxm-net
     volumes:
       - ./config/webapp-config.json:/app/config.json
-      - ${PROJECT_ROOT}/grxm-webapp/dynamic:/app/dynamic
-      - ${PROJECT_ROOT}/grxm-webapp/static:/app/static
+      - ./grxm-webapp/dynamic:/app/dynamic
+      - ./grxm-webapp/static:/app/static
     depends_on:
       grxm-iam:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongo-app:
+        condition: service_started
     environment:
       - API_CONFIG_LOCATION=/app/config.json
     restart: unless-stopped
@@ -69,3 +99,5 @@ networks:
 
 volumes:
   mongo-data:
+  redis-data:
+  mongo-app-data:

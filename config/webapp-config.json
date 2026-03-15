@@ -1,5 +1,10 @@
 {
     "port": "8080",
     "iam_host": "grxm-iam:8081",
-    "iam_authority_password": "docker-compose-secure-password-123"
+    "iam_authority_password": "docker-compose-secure-password-123",
+    "redis_host": "redis:6379",
+    "cookie_name": "grxm_token",
+    "db_provider": "mongo",
+    "mongo_uri": "mongodb://mongo-app:27017",
+    "mongo_db": "grxm_webapp"
 }
