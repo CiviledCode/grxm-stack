@@ -23,17 +23,22 @@ echo -e "\n[ Service Health Checks ]"
 
 # Webapp Health Check
 WEB_HEALTH=$(curl -s http://localhost/health)
-if echo "$WEB_HEALTH" | grep -q '\"status\":.*\"healthy\"'; then
-    echo "Webapp Service:  HEALTHY (via Nginx)"
+if echo "$WEB_HEALTH" | grep -q '\"status\":.*\"alive\"'; then
+    DB_STATUS=$(echo "$WEB_HEALTH" | grep -o '\"database\":.*\"[^\"]*\"' | cut -d'"' -f4)
+    if [ "$DB_STATUS" == "ok" ]; then
+        echo "Webapp Service:  HEALTHY (via Nginx)"
+    else
+        echo "Webapp Service:  DEGRADED (Database: $DB_STATUS)"
+    fi
 else
     echo "Webapp Service:  UNHEALTHY or OFFLINE"
-    echo "  Response: $WEB_HEALTH"
 fi
+echo "  Response: $WEB_HEALTH"
 
 # IAM Health Check
 IAM_HEALTH=$(curl -s http://localhost/iam/health)
-if echo "$IAM_HEALTH" | grep -q '"status": "alive"'; then
-    DB_STATUS=$(echo "$IAM_HEALTH" | grep -o '"database": "[^"]*"' | cut -d'"' -f4)
+if echo "$IAM_HEALTH" | grep -q '\"status\":.*\"alive\"'; then
+    DB_STATUS=$(echo "$IAM_HEALTH" | grep -o '\"database\":.*\"[^\"]*\"' | cut -d'"' -f4)
     if [ "$DB_STATUS" == "ok" ]; then
         echo "IAM Service:     HEALTHY (Database: OK)"
     else
@@ -41,8 +46,8 @@ if echo "$IAM_HEALTH" | grep -q '"status": "alive"'; then
     fi
 else
     echo "IAM Service:     UNHEALTHY or OFFLINE"
-    echo "  Response: $IAM_HEALTH"
 fi
+echo "  Response: $IAM_HEALTH"
 
 # Redis Health Check
 REDIS_HEALTH=$(sudo docker exec ${STACK_NAME}-redis redis-cli ping 2>/dev/null)
@@ -51,6 +56,7 @@ if [ "$REDIS_HEALTH" == "PONG" ]; then
 else
     echo "Redis Service:   UNHEALTHY or OFFLINE"
 fi
+echo "  Response: $REDIS_HEALTH"
 
 # Check Authority WebSocket (should be blocked)
 echo -e "\n[ Security Check ]"

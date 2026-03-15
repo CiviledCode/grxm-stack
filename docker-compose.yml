@@ -50,7 +50,7 @@ services:
   grxm-iam:
     build:
       context: ./grxm-iam
-      dockerfile: ./build/Dockerfile.iam
+      dockerfile: ../build/Dockerfile.iam
     container_name: ${STACK_NAME:-grxm}-iam
     networks:
       - grxm-net
@@ -74,7 +74,7 @@ services:
   webapp:
     build:
       context: ./grxm-webapp
-      dockerfile: ./build/Dockerfile.webapp
+      dockerfile: ../build/Dockerfile.webapp
     container_name: ${STACK_NAME:-grxm}-webapp
     networks:
       - grxm-net
