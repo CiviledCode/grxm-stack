@@ -30,4 +30,4 @@ fi
 
 echo -e "\nUpdate process complete."
 echo "If any configurations or Dockerfiles changed, apply them by running:"
-echo "  ./stop.sh && ./start.sh"
+echo "  ./scripts/stop.sh && ./scripts/start.sh"
