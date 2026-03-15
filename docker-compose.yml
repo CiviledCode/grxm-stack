@@ -50,7 +50,7 @@ services:
   grxm-iam:
     build:
       context: ./grxm-iam
-      dockerfile: /home/civ/Projects/grxm-stack/build/Dockerfile.iam
+      dockerfile: ./build/Dockerfile.iam
     container_name: ${STACK_NAME:-grxm}-iam
     networks:
       - grxm-net
@@ -74,7 +74,7 @@ services:
   webapp:
     build:
       context: ./grxm-webapp
-      dockerfile: /home/civ/Projects/grxm-stack/build/Dockerfile.webapp
+      dockerfile: ./build/Dockerfile.webapp
     container_name: ${STACK_NAME:-grxm}-webapp
     networks:
       - grxm-net
@@ -95,9 +95,13 @@ services:
 
 networks:
   grxm-net:
+    name: ${STACK_NAME:-grxm}-net
     driver: bridge
 
 volumes:
   mongo-data:
+    name: ${STACK_NAME:-grxm}-mongo-data
   redis-data:
+    name: ${STACK_NAME:-grxm}-redis-data
   mongo-app-data:
+    name: ${STACK_NAME:-grxm}-mongo-app-data

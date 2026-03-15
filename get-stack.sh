@@ -49,7 +49,12 @@ echo "Bootstrap complete! Your new stack is ready in ./$PROJECT_DIR"
 echo "STACK_NAME=$STACK_NAME" > .env
 echo "PROJECT_ROOT=." >> .env
 
+echo "Generating static configurations from templates..."
+sed "s/\${STACK_NAME}/$STACK_NAME/g" config/nginx.conf.template > config/nginx.conf
+sed "s/\${STACK_NAME}/$STACK_NAME/g" config/iam-config.json.template > config/iam-config.json
+sed "s/\${STACK_NAME}/$STACK_NAME/g" config/webapp-config.json.template > config/webapp-config.json
+
 echo "Next steps:"
 echo "  1. cd $PROJECT_DIR"
 echo "  2. Review .env and configuration files"
-echo "  3. ./start.sh"
+echo "  3. ./scripts/start.sh"

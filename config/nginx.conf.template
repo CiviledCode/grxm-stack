@@ -10,9 +10,6 @@ http {
         listen 80;
         server_name localhost;
 
-        # Use Docker's built-in DNS resolver
-        resolver 127.0.0.11 valid=10s;
-
         # Route requests starting with /iam/ to the grxm-iam service
         location /iam/ {
             # Block external access to the authority websocket
@@ -21,8 +18,8 @@ http {
                 return 403;
             }
 
-            set $iam_upstream http://grxm-iam:8081;
-            proxy_pass $iam_upstream$request_uri;
+            rewrite ^/iam/(.*)$ /$1 break;
+            proxy_pass http://${STACK_NAME}-iam:8081;
             
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -32,8 +29,7 @@ http {
 
         # Route all other requests to the webapp service
         location / {
-            set $webapp_upstream http://webapp:8080;
-            proxy_pass $webapp_upstream$request_uri;
+            proxy_pass http://${STACK_NAME}-webapp:8080;
             
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;

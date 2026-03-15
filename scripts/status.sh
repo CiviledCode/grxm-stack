@@ -2,6 +2,10 @@
 
 cd "$(dirname "$0")/.." || exit 1
 
+if [ -f .env ]; then
+    source .env
+fi
+
 STACK_NAME=${STACK_NAME:-grxm}
 
 echo "--- grxm-stack Environment Status ---"
@@ -19,7 +23,7 @@ echo -e "\n[ Service Health Checks ]"
 
 # Webapp Health Check
 WEB_HEALTH=$(curl -s http://localhost/health)
-if echo "$WEB_HEALTH" | grep -q '"status": "healthy"'; then
+if echo "$WEB_HEALTH" | grep -q '\"status\":.*\"healthy\"'; then
     echo "Webapp Service:  HEALTHY (via Nginx)"
 else
     echo "Webapp Service:  UNHEALTHY or OFFLINE"
