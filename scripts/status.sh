@@ -7,6 +7,7 @@ if [ -f .env ]; then
 fi
 
 STACK_NAME=${STACK_NAME:-grxm}
+HOST_PORT=${HOST_PORT:-80}
 
 echo "--- grxm-stack Environment Status ---"
 
@@ -22,7 +23,7 @@ sudo docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsa
 echo -e "\n[ Service Health Checks ]"
 
 # Webapp Health Check
-WEB_HEALTH=$(curl -s http://localhost/health)
+WEB_HEALTH=$(curl -s http://localhost:${HOST_PORT}/health)
 if echo "$WEB_HEALTH" | grep -q '\"status\":.*\"alive\"'; then
     DB_STATUS=$(echo "$WEB_HEALTH" | grep -o '\"database\":.*\"[^\"]*\"' | cut -d'"' -f4)
     if [ "$DB_STATUS" == "ok" ]; then
@@ -36,7 +37,7 @@ fi
 echo "  Response: $WEB_HEALTH"
 
 # IAM Health Check
-IAM_HEALTH=$(curl -s http://localhost/iam/health)
+IAM_HEALTH=$(curl -s http://localhost:${HOST_PORT}/iam/health)
 if echo "$IAM_HEALTH" | grep -q '\"status\":.*\"alive\"'; then
     DB_STATUS=$(echo "$IAM_HEALTH" | grep -o '\"database\":.*\"[^\"]*\"' | cut -d'"' -f4)
     if [ "$DB_STATUS" == "ok" ]; then
@@ -60,7 +61,7 @@ echo "  Response: $REDIS_HEALTH"
 
 # Check Authority WebSocket (should be blocked)
 echo -e "\n[ Security Check ]"
-WS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/iam/api/v1/authority)
+WS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${HOST_PORT}/iam/api/v1/authority)
 if [ "$WS_STATUS" == "403" ]; then
     echo "Authority WebSocket: SECURE (Access Blocked by Nginx)"
 else

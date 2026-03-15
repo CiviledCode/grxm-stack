@@ -7,7 +7,7 @@ services:
     networks:
       - grxm-net
     ports:
-      - "80:80"
+      - "${HOST_PORT:-80}:80"
     volumes:
       - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:

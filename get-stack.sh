@@ -21,6 +21,9 @@ PROJECT_DIR=${PROJECT_DIR:-my-grxm-project}
 read -p "Enter a unique stack prefix for docker containers [grxm]: " STACK_NAME
 STACK_NAME=${STACK_NAME:-grxm}
 
+read -p "Enter the external port for Nginx to bind to [80]: " HOST_PORT
+HOST_PORT=${HOST_PORT:-80}
+
 echo "Cloning grxm-stack into $PROJECT_DIR..."
 git clone "$STACK_URL" "$PROJECT_DIR"
 
@@ -47,6 +50,7 @@ fi
 echo ""
 echo "Bootstrap complete! Your new stack is ready in ./$PROJECT_DIR"
 echo "STACK_NAME=$STACK_NAME" > .env
+echo "HOST_PORT=$HOST_PORT" >> .env
 echo "PROJECT_ROOT=." >> .env
 
 echo "Generating static configurations from templates..."
