@@ -3,7 +3,7 @@ version: '3.8'
 services:
   nginx:
     image: nginx:latest
-    container_name: grxm-nginx
+    container_name: ${STACK_NAME:-grxm}-nginx
     networks:
       - grxm-net
     ports:
@@ -17,7 +17,7 @@ services:
 
   mongo:
     image: mongo:6.0
-    container_name: grxm-mongo
+    container_name: ${STACK_NAME:-grxm}-mongo
     networks:
       - grxm-net
     volumes:
@@ -26,7 +26,7 @@ services:
 
   mongo-app:
     image: mongo:6.0
-    container_name: grxm-mongo-app
+    container_name: ${STACK_NAME:-grxm}-mongo-app
     networks:
       - grxm-net
     volumes:
@@ -35,7 +35,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: grxm-redis
+    container_name: ${STACK_NAME:-grxm}-redis
     networks:
       - grxm-net
     volumes:
@@ -51,7 +51,7 @@ services:
     build:
       context: ./grxm-iam
       dockerfile: /home/civ/Projects/grxm-stack/build/Dockerfile.iam
-    container_name: grxm-iam
+    container_name: ${STACK_NAME:-grxm}-iam
     networks:
       - grxm-net
     volumes:
@@ -75,7 +75,7 @@ services:
     build:
       context: ./grxm-webapp
       dockerfile: /home/civ/Projects/grxm-stack/build/Dockerfile.webapp
-    container_name: grxm-webapp
+    container_name: ${STACK_NAME:-grxm}-webapp
     networks:
       - grxm-net
     volumes:

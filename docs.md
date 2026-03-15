@@ -36,7 +36,7 @@ grxm-stack/
 ├── stop.sh             # Safely stops the environment and removes networks
 ├── logs.sh             # Utility to tail logs for all or specific services
 ├── status.sh           # Prints a comprehensive health and security report
-└── wipe_database.sh    # Destructive script to wipe MongoDB volumes and all user data
+└── wipe-database.sh    # Destructive script to wipe MongoDB volumes and all user data
 ```
 
 ---
@@ -90,10 +90,10 @@ Streams the logs from the containers.
 ./logs.sh webapp   # Tail logs for a specific service (e.g., webapp, grxm-iam, mongo, nginx)
 ```
 
-### `wipe_database.sh`
+### `wipe-database.sh`
 **WARNING: Destructive.** This script stops the environment and permanently deletes the Docker named volumes associated with the stack (specifically `mongo-data`). This completely resets the database and erases all IAM users.
 ```bash
-./wipe_database.sh
+./wipe-database.sh
 ```
 
 ---

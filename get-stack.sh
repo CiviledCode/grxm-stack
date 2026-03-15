@@ -18,6 +18,9 @@ fi
 read -p "Enter the directory name for your new project [my-grxm-project]: " PROJECT_DIR
 PROJECT_DIR=${PROJECT_DIR:-my-grxm-project}
 
+read -p "Enter a unique stack prefix for docker containers [grxm]: " STACK_NAME
+STACK_NAME=${STACK_NAME:-grxm}
+
 echo "Cloning grxm-stack into $PROJECT_DIR..."
 git clone "$STACK_URL" "$PROJECT_DIR"
 
@@ -43,6 +46,9 @@ fi
 
 echo ""
 echo "Bootstrap complete! Your new stack is ready in ./$PROJECT_DIR"
+echo "STACK_NAME=$STACK_NAME" > .env
+echo "PROJECT_ROOT=." >> .env
+
 echo "Next steps:"
 echo "  1. cd $PROJECT_DIR"
 echo "  2. Review .env and configuration files"
