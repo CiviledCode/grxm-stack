@@ -6,5 +6,13 @@
     "cookie_name": "grxm_token",
     "db_provider": "mongo",
     "mongo_uri": "mongodb://${STACK_NAME}-mongo-app:27017",
-    "mongo_db": "grxm_webapp"
+    "mongo_db": "grxm_webapp",
+    "admin_role": "admin",
+    "default_role": "user",
+    "profile": {
+        "require_unique_username": true,
+        "min_username_length": 3,
+        "max_username_length": 20,
+        "blacklisted_chars": "@!#$%^&*()+=[]{}|\\:;\"'<>,.?/"
+    }
 }
