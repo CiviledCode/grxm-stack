@@ -18,6 +18,7 @@
         "path": "/iam/api/v1/authority"
     },
     "default_role": "user",
+    "admin_role": "admin",
     "id": {
         "type": "uid",
         "length": 32,
