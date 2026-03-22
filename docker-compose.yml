@@ -82,6 +82,7 @@ services:
       - ./config/webapp-config.json:/app/config.json
       - ./grxm-webapp/dynamic:/app/dynamic
       - ./grxm-webapp/static:/app/static
+      - ./grxm-webapp/assets:/app/assets
     depends_on:
       grxm-iam:
         condition: service_healthy
